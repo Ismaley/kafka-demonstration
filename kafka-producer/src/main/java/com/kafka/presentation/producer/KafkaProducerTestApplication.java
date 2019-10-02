@@ -30,7 +30,8 @@ public class KafkaProducerTestApplication implements CommandLineRunner {
 		for(int i = 0; i <= 10; i++) {
 			NotificationParam param = buildNotificationParameter(i);
 			log.info("publishing message {}", param);
-			this.template.send("kafka_test_topic", param);
+			this.template.send("dynamic_topic_1", param);
+			this.template.send("dynamic_topic_2", param);
 		}
 	}
 
