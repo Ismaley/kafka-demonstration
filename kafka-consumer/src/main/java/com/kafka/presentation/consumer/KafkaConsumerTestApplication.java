@@ -18,9 +18,9 @@ public class KafkaConsumerTestApplication implements CommandLineRunner {
 	}
 
 
-	@KafkaListener(topics = "kafka_test_topic")
+	@KafkaListener(topics = {"dynamic_topic_1", "dynamic_topic_2"})
 	public void consume(ConsumerRecord<?, ?> cr) {
-		log.info("consumed message {} ", cr.value().toString(), LocalTime.now());
+		log.info("consumed message: {}, topic: {} at {} ", cr.value().toString(), cr.topic(), LocalTime.now());
 	}
 
 	@Override
