@@ -31,6 +31,7 @@ public class KafkaAdminTestApplication implements CommandLineRunner {
 		final String topic2Name = "dynamic_topic_2";
 
 		AdminClient adminClient = KafkaAdminClient.create(buildDefaultProps());
+		System.out.println("creating new kafka topics: " + Arrays.asList(topic1Name, topic2Name));
 		CreateTopicsResult result = adminClient.createTopics(Arrays.asList(new NewTopic(topic1Name, partitionNumber, replicationFactor),
 				new NewTopic(topic2Name, partitionNumber, replicationFactor)));
 
@@ -42,8 +43,27 @@ public class KafkaAdminTestApplication implements CommandLineRunner {
 		TopicDescription topic1Description = describeResult.values().get(topic1Name).get();
 		TopicDescription topic2Description = describeResult.values().get(topic2Name).get();
 
-		System.out.println(topic1Description);
-		System.out.println(topic2Description);
+		System.out.println("kafka topic: " + topic1Description);
+		System.out.println("kafka topic: " + topic2Description);
+
+		Thread.sleep(5000);
+
+		System.out.println("deleting kafka topics: " + Arrays.asList(topic1Name, topic2Name));
+		DeleteTopicsResult deleteTopicsResult = adminClient.deleteTopics(Arrays.asList(topic1Name, topic2Name));
+
+		System.out.println(deleteTopicsResult.values().get(topic1Name).get());
+		System.out.println(deleteTopicsResult.values().get(topic2Name).get());
+
+		DescribeTopicsResult describeResultAfterDeletion = adminClient.describeTopics(Arrays.asList(topic1Name, topic2Name));
+		TopicDescription topic1DescriptionAfterDeletion = describeResultAfterDeletion.values().get(topic1Name).get();
+		TopicDescription topic2DescriptionAfterDeletion = describeResultAfterDeletion.values().get(topic2Name).get();
+
+		System.out.println("kafka topic: " + topic1DescriptionAfterDeletion);
+		System.out.println("kafka topic: " + topic2DescriptionAfterDeletion);
+
+		Thread.sleep(5000);
+
+		adminClient.close();
 	}
 
 	private Map<String, Object> buildDefaultProps() {
