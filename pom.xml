@@ -9,6 +9,7 @@
 	<modules>
 		<module>kafka-producer</module>
 		<module>kafka-consumer</module>
+		<module>kafka-admin</module>
 	</modules>
 	<packaging>pom</packaging>
 
